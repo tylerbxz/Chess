@@ -59,18 +59,19 @@ public class Game extends JComponent {
         //create black pieces
         blackPieces.add(blackKing);
         blackPieces.add(new Rook(0, 0, false, "Rook", this));
-//        blackPieces.add(new Rook(7, 0, false, "Rook", this));
-//        blackPieces.add(new Bishop(5, 0, false, "Bishop", this));
-//        blackPieces.add(new Bishop(2, 0, false, "Bishop", this));
-//        blackPieces.add(new Knight(1, 0, false, "Knight", this));
-//        blackPieces.add(new Knight(6, 0, false, "Knight", this));
-//        blackPieces.add(new Queen(3, 0, false, "Queen", this));
+        blackPieces.add(new Rook(7, 0, false, "Rook", this));
+        blackPieces.add(new Bishop(5, 0, false, "Bishop", this));
+        blackPieces.add(new Bishop(2, 0, false, "Bishop", this));
+        blackPieces.add(new Knight(1, 0, false, "Knight", this));
+        blackPieces.add(new Knight(6, 0, false, "Knight", this));
+        blackPieces.add(new Queen(3, 0, false, "Queen", this));
         for (int i = 0; i < 8; i++) {
-            //blackPieces.add(new Pawn(i, 1, false, "Pawn", this));
+            blackPieces.add(new Pawn(i, 1, false, "Pawn", this));
         }
 
         // loads piece and board images
         Images.loadAll();
+
     }
 
     @Override
@@ -101,17 +102,20 @@ public class Game extends JComponent {
             g.drawImage(Images.getImage(selectedPiece), selectedPiece.getX() * 60 + 105, selectedPiece.getY() * 60 + 105, this);
         }
 
-
+        g.setColor(Color.RED);
+        g.setFont(new Font("Courier New", Font.BOLD, 30));
         if (check) {
-            g.setColor(Color.RED);
-            g.setFont(new Font("Courier New", Font.BOLD, 30));
             if (checkMate) {
                 this.removeMouseListener(mouseAdapter);
                 this.removeMouseMotionListener(mouseAdapter);
-                g.drawString("CheckMate!", 250, 50);
+                g.drawString("Checkmate!", 250, 50);
             } else {
                 g.drawString("Check!", 290, 50);
             }
+        } else if (checkMate) {
+            this.removeMouseListener(mouseAdapter);
+            this.removeMouseMotionListener(mouseAdapter);
+            g.drawString("Stalemate!", 250, 50);
         }
     }
 
@@ -206,6 +210,7 @@ public class Game extends JComponent {
                 promotion();
                 isWhiteTurn = !isWhiteTurn;
                 isCheck();
+                isCheckMate();
 
             } else {
                 //return to original square
@@ -360,7 +365,6 @@ public class Game extends JComponent {
                 p.updateEnemyMoves();
                 if (p.containsPair(pos)) {
                     check = true;
-                    isCheckMate();
                     break;
                 }
             }
@@ -370,7 +374,6 @@ public class Game extends JComponent {
                 p.updateEnemyMoves();
                 if (p.containsPair(pos)) {
                     check = true;
-                    isCheckMate();
                     break;
                 }
             }
